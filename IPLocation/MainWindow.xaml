@@ -1,0 +1,103 @@
+﻿<telerik:RadRibbonWindow x:Class="IPLocation.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:local="clr-namespace:IPLocation"
+        xmlns:telerik="http://schemas.telerik.com/2008/xaml/presentation"
+        mc:Ignorable="d"
+        Title="MainWindow" Height="720" Width="1280">
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+        <telerik:RadRibbonView Grid.Row="0" ApplicationName="IP Location">
+            <telerik:RadRibbonTab Header="Licensing">
+                <telerik:RadRibbonGroup Header="License Key">
+                    <StackPanel Orientation="Vertical">
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock VerticalAlignment="Center" Width="75"
+                                       Margin="0 0 10 0">User ID</TextBlock>
+                            <TextBox Width="200" Text="{Binding AuthToken.UserId, Mode=OneWayToSource}"/>
+                        </StackPanel>
+                        <StackPanel Orientation="Horizontal" Margin="5">
+                            <TextBlock VerticalAlignment="Center" Width="75"
+                                       Margin="0 0 10 0">License Key</TextBlock>
+                            <TextBox Width="200" Text="{Binding AuthToken.LicenseKey, Mode=OneWayToSource}"/>
+                        </StackPanel>
+                    </StackPanel>
+                    <telerik:RadRibbonButton Click="SaveLicense_OnClick"
+                                             Size="Large"
+                                             LargeImage="Assets/Save.png"
+                                             HorizontalContentAlignment="Center"
+                                             VerticalContentAlignment="Center">Save License</telerik:RadRibbonButton>
+                </telerik:RadRibbonGroup>
+                <telerik:RadRibbonGroup Header="License Status">
+                    <StackPanel Orientation="Vertical" VerticalAlignment="Center" Margin="5">
+                        <TextBlock HorizontalAlignment="Center">Left Queries</TextBlock>
+                        <TextBlock FontSize="30" HorizontalAlignment="Center"
+                                   Text="{Binding QueriesRemaining, Mode=OneWay}"/>
+                    </StackPanel>
+                </telerik:RadRibbonGroup>
+            </telerik:RadRibbonTab>
+        </telerik:RadRibbonView>
+        <Grid Grid.Row="1" Margin="10">
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition Width="Auto"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="*"/>
+                <ColumnDefinition Width="10"/>
+                <ColumnDefinition Width="Auto"/>
+            </Grid.ColumnDefinitions>
+            <TextBlock Grid.Column="0" VerticalAlignment="Center">IP Address</TextBlock>
+            <TextBox Grid.Column="2" Text="{Binding IpAddress, Mode=OneWayToSource}"/>
+            <Button Grid.Column="4" Width="60" Click="LocateButton_OnClick">Locate</Button>
+        </Grid>
+        <telerik:RadDocking Grid.Row="2">
+            <telerik:RadDocking.DocumentHost>
+                <telerik:RadSplitContainer>
+                    <telerik:RadPaneGroup>
+                        <telerik:RadPane Header="Map" CanUserClose="False">
+                            <telerik:RadMap x:Name="Map" DistanceUnit="Kilometer" MinZoomLevel="3">
+                                <telerik:RadMap.Provider>
+                                    <telerik:OpenStreetMapProvider/>
+                                </telerik:RadMap.Provider>
+                                <telerik:InformationLayer x:Name="LocationLayer" />
+                            </telerik:RadMap>
+                        </telerik:RadPane>
+                    </telerik:RadPaneGroup>
+                </telerik:RadSplitContainer>
+            </telerik:RadDocking.DocumentHost>
+            <telerik:RadSplitContainer InitialPosition="DockedRight" Width="400">
+                <telerik:RadPaneGroup>
+                    <telerik:RadPane Header="Details" CanUserClose="False">
+                        <telerik:RadPropertyGrid Item="{Binding Result, Mode=OneWay}"
+                                                 IsReadOnly="True"
+                                                 AutoGeneratePropertyDefinitions="False"
+                                                 DescriptionPanelVisibility="Collapsed">
+                            <telerik:RadPropertyGrid.PropertyDefinitions>
+                                <telerik:PropertyDefinition Binding="{Binding IsoCode}" GroupName="Country" DisplayName="ISO Code"/>
+                                <telerik:PropertyDefinition Binding="{Binding Country}" GroupName="Country" DisplayName="Country Name"/>
+                                <telerik:PropertyDefinition Binding="{Binding City}" GroupName="City" DisplayName="City Name"/>
+                                <telerik:PropertyDefinition Binding="{Binding Postal}" GroupName="City" DisplayName="Postal Code"/>
+                                <telerik:PropertyDefinition Binding="{Binding Location}" GroupName="Location" DisplayName="Geographic Coordinates"/>
+                                <telerik:PropertyDefinition Binding="{Binding AccuracyRadius}" GroupName="Location" DisplayName="Accuracy Radius"/>
+                                <telerik:PropertyDefinition Binding="{Binding PopulationDensity}" GroupName="Location" DisplayName="Population Density"/>
+                                <telerik:PropertyDefinition Binding="{Binding AverageIncome}" GroupName="Location" DisplayName="Average Income"/>
+                                <telerik:PropertyDefinition Binding="{Binding AsNumber}" GroupName="Networking" DisplayName="AS Number"/>
+                                <telerik:PropertyDefinition Binding="{Binding AsOrganization}" GroupName="Networking" DisplayName="AS Organization"/>
+                                <telerik:PropertyDefinition Binding="{Binding Isp}" GroupName="Networking" DisplayName="ISP"/>
+                                <telerik:PropertyDefinition Binding="{Binding Domain}" GroupName="Networking" DisplayName="Domain"/>
+                                <telerik:PropertyDefinition Binding="{Binding Organization}" GroupName="Networking" DisplayName="Organization"/>
+                                <telerik:PropertyDefinition Binding="{Binding UserType}" GroupName="Networking" DisplayName="User Type"/>
+                            </telerik:RadPropertyGrid.PropertyDefinitions>
+                        </telerik:RadPropertyGrid>
+                    </telerik:RadPane>
+                </telerik:RadPaneGroup>
+            </telerik:RadSplitContainer>
+        </telerik:RadDocking>
+    </Grid>
+</telerik:RadRibbonWindow>
+
